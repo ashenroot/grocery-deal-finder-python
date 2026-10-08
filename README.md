@@ -4,8 +4,6 @@ Automatically checks weekly sale ads from **Publix**, **Kroger**, and **ALDI** e
 
 Built with Python and Claude AI. Runs on a schedule via GitHub Actions — no server required.
 
-![scenario diagram](docs/scenario.png)
-
 ---
 
 ## How it works
