@@ -27,26 +27,31 @@ cd grocery-deal-alert
 
 ### 2. Edit your shopping list
 
-Open `shopping_list.csv` and add the items you want to track. Columns:
+Open `shopping_list.csv` and add the items you want to track. The four match columns form a **hierarchy of specificity** — each column narrows the match further than the one before it:
+
+```
+Category → Subcategory → Brand → Size
+(broadest)                        (most specific)
+```
+
+A blank value means "any" at that level of specificity. Claude only applies the constraints you fill in — a blank Brand means any brand in that category qualifies, a blank Size means any size qualifies. All filled-in fields must match simultaneously.
 
 | Column | Required | Notes |
 |---|---|---|
 | Category | Yes | e.g. `cheese`, `beef`, `pasta` |
-| Subcategory | No | e.g. `ground` for coffee |
-| Brand | No | If set, must match exactly — e.g. `Tillamook` |
+| Subcategory | No | Narrows category — e.g. `ground` under `coffee` |
+| Brand | No | If set, must match verbatim — e.g. `Tillamook`. Claude will not substitute store brands or similar names. |
 | Size | No | e.g. `12 oz` |
-| Notes | No | Human-readable notes, ignored by the script |
-
-**Empty fields are wildcards.** If you leave Brand blank, any brand in that category qualifies.
+| Notes | No | Human-readable notes for your reference — ignored by the script |
 
 ```csv
 Category,Subcategory,Brand,Size,Notes
-cheese,,Tillamook,,
-butter,,Kerrygold,,
-pasta,,Carbe Diem,,
-chips,,Tostitos,,
-coffee,ground,,12 oz,
-beef,,,,any beef on sale
+cheese,,Tillamook,,        ← Tillamook cheese, any size
+butter,,Kerrygold,,        ← Kerrygold butter, any size
+pasta,,Carbe Diem,,        ← Carbe Diem pasta specifically
+chips,,Tostitos,,          ← Tostitos chips specifically
+coffee,ground,,12 oz,      ← any brand of ground coffee, 12 oz only
+beef,,,,any beef on sale   ← any beef, any brand, any size
 ```
 
 ### 3. Get an Anthropic API key
